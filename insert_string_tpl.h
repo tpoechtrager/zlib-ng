@@ -28,6 +28,7 @@
  * the previous length of the hash chain.
  */
 
+HOT
 ZLIB_INTERNAL Pos QUICK_INSERT_STRING(deflate_state *const s, const Pos str) {
     Pos head;
     uint32_t val, hm, h = 0;
@@ -61,6 +62,7 @@ ZLIB_INTERNAL Pos QUICK_INSERT_STRING(deflate_state *const s, const Pos str) {
  *    (except for the last MIN_MATCH-1 bytes of the input file).
  */
 
+HOT
 ZLIB_INTERNAL Pos INSERT_STRING(deflate_state *const s, const Pos str, unsigned int count) {
     Pos idx, ret;
     uint8_t *strstart, *strend;

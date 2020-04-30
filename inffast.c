@@ -50,6 +50,7 @@
       requires strm->avail_out >= 258 for each loop to avoid checking for
       output space.
  */
+HOT
 void ZLIB_INTERNAL zng_inflate_fast(PREFIX3(stream) *strm, unsigned long start) {
     /* start: inflate()'s starting value for strm->avail_out */
     struct inflate_state *state;

@@ -97,6 +97,7 @@ ZLIB_INTERNAL Pos insert_string_stub(deflate_state *const s, const Pos str, unsi
     return functable.insert_string(s, str, count);
 }
 
+
 ZLIB_INTERNAL Pos quick_insert_string_stub(deflate_state *const s, const Pos str) {
     functable.quick_insert_string = &quick_insert_string_c;
 
@@ -110,6 +111,7 @@ ZLIB_INTERNAL Pos quick_insert_string_stub(deflate_state *const s, const Pos str
 
     return functable.quick_insert_string(s, str);
 }
+
 
 ZLIB_INTERNAL void fill_window_stub(deflate_state *s) {
     // Initialize default
@@ -127,6 +129,7 @@ ZLIB_INTERNAL void fill_window_stub(deflate_state *s) {
     functable.fill_window(s);
 }
 
+
 ZLIB_INTERNAL void slide_hash_stub(deflate_state *s) {
     // Initialize default
     functable.slide_hash = &slide_hash_c;
@@ -141,6 +144,7 @@ ZLIB_INTERNAL void slide_hash_stub(deflate_state *s) {
     functable.slide_hash(s);
 }
 
+
 ZLIB_INTERNAL uint32_t adler32_stub(uint32_t adler, const unsigned char *buf, size_t len) {
     // Initialize default
     functable.adler32 = &adler32_c;
@@ -152,6 +156,7 @@ ZLIB_INTERNAL uint32_t adler32_stub(uint32_t adler, const unsigned char *buf, si
 
     return functable.adler32(adler, buf, len);
 }
+
 
 ZLIB_INTERNAL uint32_t crc32_stub(uint32_t crc, const unsigned char *buf, uint64_t len) {
 

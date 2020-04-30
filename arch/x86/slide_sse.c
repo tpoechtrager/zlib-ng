@@ -13,6 +13,7 @@
 
 #include <immintrin.h>
 
+WARM
 ZLIB_INTERNAL void slide_hash_sse2(deflate_state *s) {
     Pos *p;
     unsigned n;

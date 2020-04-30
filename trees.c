@@ -152,6 +152,7 @@ static void init_block(deflate_state *s) {
  * when the heap property is re-established (each father smaller than its
  * two sons).
  */
+
 static void pqdownheap(deflate_state *s, ct_data *tree, int k) {
     /* tree: the tree to restore */
     /* k: node to move down */
@@ -186,6 +187,7 @@ static void pqdownheap(deflate_state *s, ct_data *tree, int k) {
  *     The length opt_len is updated; static_len is also updated if stree is
  *     not null.
  */
+
 static void gen_bitlen(deflate_state *s, tree_desc *desc) {
     /* desc: the tree descriptor */
     ct_data *tree           = desc->dyn_tree;
@@ -279,6 +281,7 @@ static void gen_bitlen(deflate_state *s, tree_desc *desc) {
  * OUT assertion: the field code is set for all tree elements of non
  *     zero code length.
  */
+
 ZLIB_INTERNAL void gen_codes(ct_data *tree, int max_code, uint16_t *bl_count) {
     /* tree: the tree to decorate */
     /* max_code: largest code with non zero frequency */
@@ -321,6 +324,7 @@ ZLIB_INTERNAL void gen_codes(ct_data *tree, int max_code, uint16_t *bl_count) {
  *     and corresponding code. The length opt_len is updated; static_len is
  *     also updated if stree is not null. The field max_code is set.
  */
+
 static void build_tree(deflate_state *s, tree_desc *desc) {
     /* desc: the tree descriptor */
     ct_data *tree         = desc->dyn_tree;
@@ -409,6 +413,7 @@ static void build_tree(deflate_state *s, tree_desc *desc) {
  * Scan a literal or distance tree to determine the frequencies of the codes
  * in the bit length tree.
  */
+
 static void scan_tree(deflate_state *s, ct_data *tree, int max_code) {
     /* tree: the tree to be scanned */
     /* max_code: and its largest code of non zero frequency */
@@ -457,6 +462,7 @@ static void scan_tree(deflate_state *s, ct_data *tree, int max_code) {
  * Send a literal or distance tree in compressed form, using the codes in
  * bl_tree.
  */
+
 static void send_tree(deflate_state *s, ct_data *tree, int max_code) {
     /* tree: the tree to be scanned */
     /* max_code and its largest code of non zero frequency */
@@ -523,6 +529,7 @@ static void send_tree(deflate_state *s, ct_data *tree, int max_code) {
  * Construct the Huffman tree for the bit lengths and return the index in
  * bl_order of the last bit length code to send.
  */
+
 static int build_bl_tree(deflate_state *s) {
     int max_blindex;  /* index of last bit length code of non zero freq */
 

@@ -747,6 +747,7 @@ unsigned long ZEXPORT PREFIX(deflateBound)(PREFIX3(stream) *strm, unsigned long 
  * applications may wish to modify it to avoid allocating a large
  * strm->next_out buffer and copying into it. (See also read_buf()).
  */
+WARM
 ZLIB_INTERNAL void flush_pending(PREFIX3(stream) *strm) {
     uint32_t len;
     deflate_state *s = strm->state;
@@ -779,6 +780,7 @@ ZLIB_INTERNAL void flush_pending(PREFIX3(stream) *strm) {
     } while (0)
 
 /* ========================================================================= */
+WARM
 int ZEXPORT PREFIX(deflate)(PREFIX3(stream) *strm, int flush) {
     int old_flush; /* value of flush param for previous deflate call */
     deflate_state *s;
@@ -1154,6 +1156,7 @@ int ZEXPORT PREFIX(deflateCopy)(PREFIX3(stream) *dest, PREFIX3(stream) *source) 
  * allocating a large strm->next_in buffer and copying from it.
  * (See also flush_pending()).
  */
+WARM
 ZLIB_INTERNAL unsigned read_buf(PREFIX3(stream) *strm, unsigned char *buf, unsigned size) {
     uint32_t len = strm->avail_in;
 
@@ -1215,6 +1218,7 @@ static void lm_init(deflate_state *s) {
 /* ===========================================================================
  * Check that the match at match_start is indeed a match.
  */
+WARM
 void check_match(deflate_state *s, IPos start, IPos match, int length) {
     /* check that the match is indeed a match */
     if (memcmp(s->window + match, s->window + start, length) != EQUAL) {
@@ -1245,7 +1249,7 @@ void check_match(deflate_state *s, IPos start, IPos match, int length) {
  *    performed for at least two bytes (required for the zip translate_eol
  *    option -- not supported here).
  */
-
+WARM
 void ZLIB_INTERNAL fill_window_c(deflate_state *s) {
     unsigned n;
     unsigned more;    /* Amount of free space at the end of the window. */

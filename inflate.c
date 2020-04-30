@@ -240,6 +240,7 @@ int ZLIB_INTERNAL inflate_ensure_window(struct inflate_state *state) {
    output will fall in the output data, making match copies simpler and faster.
    The advantage may be dependent on the size of the processor's data caches.
  */
+HOT
 static int updatewindow(PREFIX3(stream) *strm, const unsigned char *end, uint32_t copy) {
     struct inflate_state *state;
     uint32_t dist;
@@ -371,6 +372,7 @@ static int updatewindow(PREFIX3(stream) *strm, const unsigned char *end, uint32_
    will return Z_BUF_ERROR if it has not reached the end of the stream.
  */
 
+HOT
 int ZEXPORT PREFIX(inflate)(PREFIX3(stream) *strm, int flush) {
     struct inflate_state *state;
     const unsigned char *next;  /* next input */

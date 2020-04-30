@@ -35,6 +35,7 @@ const char * ZEXPORT zlibng_version(void) {
     return ZLIBNG_VERSION;
 }
 
+COLD
 unsigned long ZEXPORT PREFIX(zlibCompileFlags)(void) {
     unsigned long flags;
 
@@ -100,6 +101,7 @@ void ZLIB_INTERNAL z_error(char *m) {
 /* exported to allow conversion of error code to string for compress() and
  * uncompress()
  */
+COLD
 const char * ZEXPORT PREFIX(zError)(int err) {
     return ERR_MSG(err);
 }

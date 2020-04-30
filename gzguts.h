@@ -28,6 +28,8 @@
 #include <limits.h>
 #include <fcntl.h>
 
+#include "zutil.h"
+
 #if defined(ZLIB_COMPAT)
 #  include "zlib.h"
 #else

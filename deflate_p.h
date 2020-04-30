@@ -26,6 +26,7 @@ void flush_pending(PREFIX3(stream) *strm);
 extern const unsigned char ZLIB_INTERNAL zng_length_code[];
 extern const unsigned char ZLIB_INTERNAL zng_dist_code[];
 
+WARM
 static inline int zng_tr_tally_lit(deflate_state *s, unsigned char c) {
     /* c is the unmatched char */
     s->sym_buf[s->sym_next++] = 0;
@@ -36,6 +37,7 @@ static inline int zng_tr_tally_lit(deflate_state *s, unsigned char c) {
     return (s->sym_next == s->sym_end);
 }
 
+WARM
 static inline int zng_tr_tally_dist(deflate_state *s, unsigned dist, unsigned char len) {
     /* dist: distance of matched string */
     /* len: match length-MIN_MATCH */

@@ -33,6 +33,7 @@
 extern void fill_window_sse(deflate_state *s);
 extern void flush_pending(PREFIX3(stream) *strm);
 
+WARM
 static inline long compare258(const unsigned char *const src0, const unsigned char *const src1) {
 #ifdef _MSC_VER
     long cnt;
@@ -125,6 +126,7 @@ static inline long compare258(const unsigned char *const src0, const unsigned ch
 static const unsigned quick_len_codes[MAX_MATCH-MIN_MATCH+1];
 static const unsigned quick_dist_codes[8192];
 
+WARM
 static inline void static_emit_ptr(deflate_state *const s, const int lc, const unsigned dist) {
     unsigned code1 = quick_len_codes[lc] >> 8;
     unsigned len1 =  quick_len_codes[lc] & 0xFF;
@@ -146,6 +148,7 @@ static inline void static_emit_ptr(deflate_state *const s, const int lc, const u
 
 const ct_data static_ltree[L_CODES+2];
 
+WARM
 static inline void static_emit_lit(deflate_state *const s, const int lit) {
     uint32_t bi_valid = s->bi_valid;
     uint32_t bi_buf = s->bi_buf;
@@ -187,6 +190,7 @@ static void static_emit_end_block(deflate_state *const s, int last) {
     s->block_open = 0;
 }
 
+WARM
 ZLIB_INTERNAL block_state deflate_quick(deflate_state *s, int flush) {
     IPos hash_head;
     unsigned dist, match_len;

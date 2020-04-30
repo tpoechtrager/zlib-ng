@@ -7,6 +7,7 @@
 #include "zendian.h"
 
 /* Load 64 bits from IN and place the bytes at offset BITS in the result. */
+HOT
 static inline uint64_t load_64_bits(const unsigned char *in, unsigned bits) {
     uint64_t chunk;
     memcpy(&chunk, in, sizeof(chunk));
@@ -35,6 +36,7 @@ typedef __m128i inffast_chunk_t;
    Ask the compiler to perform a wide, unaligned load with an machine
    instruction appropriate for the inffast_chunk_t type.
  */
+HOT
 static inline inffast_chunk_t loadchunk(unsigned char const* s) {
     inffast_chunk_t c;
     memcpy(&c, s, sizeof(c));
@@ -45,6 +47,7 @@ static inline inffast_chunk_t loadchunk(unsigned char const* s) {
    Ask the compiler to perform a wide, unaligned store with an machine
    instruction appropriate for the inffast_chunk_t type.
  */
+HOT
 static inline void storechunk(unsigned char* d, inffast_chunk_t c) {
     memcpy(d, &c, sizeof(c));
 }
@@ -61,6 +64,7 @@ static inline void storechunk(unsigned char* d, inffast_chunk_t c) {
    without iteration, which will hopefully make the branch prediction more
    reliable.
  */
+HOT
 static inline unsigned char* chunkcopy(unsigned char *out, unsigned char const *from, unsigned len) {
     --len;
     storechunk(out, loadchunk(from));
@@ -79,6 +83,7 @@ static inline unsigned char* chunkcopy(unsigned char *out, unsigned char const *
 /*
    Behave like chunkcopy, but avoid writing beyond of legal output.
  */
+HOT
 static inline unsigned char* chunkcopysafe(unsigned char *out, unsigned char const *from, unsigned len,
                                            unsigned char *safe) {
     if ((safe - out) < (ptrdiff_t)INFFAST_CHUNKSIZE) {
@@ -126,6 +131,7 @@ static inline unsigned char* chunkunroll(unsigned char *out, unsigned *dist, uns
     return out;
 }
 
+HOT
 static inline inffast_chunk_t chunkmemset_1(unsigned char *from) {
 #if defined(X86_SSE2)
     int8_t c;
@@ -233,6 +239,7 @@ static inline unsigned char *chunkmemset_6(unsigned char *out, unsigned char *fr
 #endif
 
 /* Copy DIST bytes from OUT - DIST into OUT + DIST * k, for 0 <= k < LEN/DIST. Return OUT + LEN. */
+HOT
 static inline unsigned char *chunkmemset(unsigned char *out, unsigned dist, unsigned len) {
     /* Debug performance related issues when len < sizeof(uint64_t):
        Assert(len >= sizeof(uint64_t), "chunkmemset should be called on larger chunks"); */
@@ -298,6 +305,7 @@ static inline unsigned char *chunkmemset(unsigned char *out, unsigned dist, unsi
     return out;
 }
 
+HOT
 static inline unsigned char* chunkmemsetsafe(unsigned char *out, unsigned dist, unsigned len, unsigned left) {
     if (left < (unsigned)(3 * INFFAST_CHUNKSIZE)) {
         while (len > 0) {
@@ -313,11 +321,13 @@ static inline unsigned char* chunkmemsetsafe(unsigned char *out, unsigned dist, 
 
 #else /* INFFAST_CHUNKSIZE */
 
+HOT
 static inline unsigned char *copy_1_bytes(unsigned char *out, unsigned char *from) {
     *out++ = *from;
     return out;
 }
 
+HOT
 static inline unsigned char *copy_2_bytes(unsigned char *out, unsigned char *from) {
     uint16_t chunk;
     unsigned sz = sizeof(chunk);
@@ -326,11 +336,13 @@ static inline unsigned char *copy_2_bytes(unsigned char *out, unsigned char *fro
     return out + sz;
 }
 
+HOT
 static inline unsigned char *copy_3_bytes(unsigned char *out, unsigned char *from) {
     out = copy_1_bytes(out, from);
     return copy_2_bytes(out, from + 1);
 }
 
+HOT
 static inline unsigned char *copy_4_bytes(unsigned char *out, unsigned char *from) {
     uint32_t chunk;
     unsigned sz = sizeof(chunk);
@@ -339,21 +351,25 @@ static inline unsigned char *copy_4_bytes(unsigned char *out, unsigned char *fro
     return out + sz;
 }
 
+HOT
 static inline unsigned char *copy_5_bytes(unsigned char *out, unsigned char *from) {
     out = copy_1_bytes(out, from);
     return copy_4_bytes(out, from + 1);
 }
 
+HOT
 static inline unsigned char *copy_6_bytes(unsigned char *out, unsigned char *from) {
     out = copy_2_bytes(out, from);
     return copy_4_bytes(out, from + 2);
 }
 
+HOT
 static inline unsigned char *copy_7_bytes(unsigned char *out, unsigned char *from) {
     out = copy_3_bytes(out, from);
     return copy_4_bytes(out, from + 3);
 }
 
+HOT
 static inline unsigned char *copy_8_bytes(unsigned char *out, unsigned char *from) {
     uint64_t chunk;
     unsigned sz = sizeof(chunk);
@@ -363,6 +379,7 @@ static inline unsigned char *copy_8_bytes(unsigned char *out, unsigned char *fro
 }
 
 /* Copy LEN bytes (7 or fewer) from FROM into OUT. Return OUT + LEN. */
+HOT
 static inline unsigned char *copy_bytes(unsigned char *out, unsigned char *from, unsigned len) {
     Assert(len < 8, "copy_bytes should be called with less than 8 bytes");
 
@@ -398,6 +415,7 @@ static inline unsigned char *copy_bytes(unsigned char *out, unsigned char *from,
 }
 
 /* Copy LEN bytes (7 or fewer) from FROM into OUT. Return OUT + LEN. */
+HOT
 static inline unsigned char *set_bytes(unsigned char *out, unsigned char *from, unsigned dist, unsigned len) {
     Assert(len < 8, "set_bytes should be called with less than 8 bytes");
 
@@ -502,6 +520,7 @@ static inline unsigned char *set_bytes(unsigned char *out, unsigned char *from, 
 }
 
 /* Byte by byte semantics: copy LEN bytes from OUT + DIST and write them to OUT. Return OUT + LEN. */
+HOT
 static inline unsigned char *chunk_memcpy(unsigned char *out, unsigned char *from, unsigned len) {
     unsigned sz = sizeof(uint64_t);
     Assert(len >= sz, "chunk_memcpy should be called on larger chunks");
@@ -565,6 +584,7 @@ static inline unsigned char *chunk_memcpy(unsigned char *out, unsigned char *fro
 }
 
 /* Memset LEN bytes in OUT with the value at OUT - 1. Return OUT + LEN. */
+HOT
 static inline unsigned char *byte_memset(unsigned char *out, unsigned len) {
     unsigned sz = sizeof(uint64_t);
     Assert(len >= sz, "byte_memset should be called on larger chunks");
@@ -630,6 +650,7 @@ static inline unsigned char *byte_memset(unsigned char *out, unsigned len) {
 }
 
 /* Copy DIST bytes from OUT - DIST into OUT + DIST * k, for 0 <= k < LEN/DIST. Return OUT + LEN. */
+HOT
 static inline unsigned char *chunk_memset(unsigned char *out, unsigned char *from, unsigned dist, unsigned len) {
     if (dist >= len)
         return chunk_memcpy(out, from, len);
@@ -655,6 +676,7 @@ static inline unsigned char *chunk_memset(unsigned char *out, unsigned char *fro
 }
 
 /* Byte by byte semantics: copy LEN bytes from FROM and write them to OUT. Return OUT + LEN. */
+HOT
 static inline unsigned char *chunk_copy(unsigned char *out, unsigned char *from, int dist, unsigned len) {
     if (len < sizeof(uint64_t)) {
         if (dist > 0)

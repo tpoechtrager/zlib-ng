@@ -431,6 +431,7 @@ int ZEXPORT PREFIX(gzeof)(gzFile file) {
 }
 
 /* -- see zlib.h -- */
+COLD
 const char * ZEXPORT PREFIX(gzerror)(gzFile file, int *errnum) {
     gz_state *state;
 
@@ -448,6 +449,7 @@ const char * ZEXPORT PREFIX(gzerror)(gzFile file, int *errnum) {
 }
 
 /* -- see zlib.h -- */
+COLD
 void ZEXPORT PREFIX(gzclearerr)(gzFile file) {
     gz_state *state;
 
@@ -472,6 +474,7 @@ void ZEXPORT PREFIX(gzclearerr)(gzFile file) {
    memory).  Simply save the error message as a static string.  If there is an
    allocation failure constructing the error message, then convert the error to
    out of memory. */
+COLD
 void ZLIB_INTERNAL gz_error(gz_state *state, int err, const char *msg) {
     /* free previously allocated message and clear */
     if (state->msg != NULL) {
